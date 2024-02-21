@@ -7,7 +7,10 @@ process = None
 @socketio.on('start_log_stream')
 def handle_log_stream(data):
     deployment_name = data['deployment_name']
+    filters = data['filters']
     command = f"stern {deployment_name} --timestamps"
+    if filters.strip():
+        command += f" {filters}"
     global process
     process = Popen(command, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
 
