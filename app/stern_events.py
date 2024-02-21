@@ -8,6 +8,7 @@ process = None
 def handle_log_stream(data):
     deployment_name = data['deployment_name']
     command = f"stern {deployment_name} --timestamps"
+    global process
     process = Popen(command, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
 
     while True:
@@ -19,6 +20,7 @@ def handle_log_stream(data):
 
 @socketio.on('stop_log_stream')
 def handle_log_stream():
+    global process
     if process:
         process.kill()
         process = None
