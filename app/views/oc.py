@@ -12,11 +12,13 @@ def run_oc_command(command):
     else:
         return f"Error: {stderr.decode('utf-8')}"
 
+
 @oc_blueprint.route('/login', methods=['POST'])
 def login():
     data = request.json
     result = run_oc_command(f"oc login -u {data['email']} -p {data['password']} --server={data['server']}")
     return jsonify({"current_project": result.strip()})
+
 
 @oc_blueprint.route('/current-project', methods=['GET'])
 def current_project():
@@ -26,6 +28,7 @@ def current_project():
         return jsonify({"current_project": "Not logged in"}), 401
     return jsonify({"current_project": result.strip()})
 
+
 @oc_blueprint.route('/projects', methods=['GET'])
 def projects():
     result = run_oc_command("oc get projects -o name")
@@ -33,6 +36,7 @@ def projects():
     if user_not_logged:
         return jsonify({"current_project": "Not logged in"}), 401
     return jsonify({"projects": result.split()})
+
 
 @oc_blueprint.route('/change-project', methods=['POST'])
 def change_project():
@@ -43,6 +47,7 @@ def change_project():
         return jsonify({"current_project": "Not logged in"}), 401
     return jsonify({"current_project": result.strip()})
 
+
 @oc_blueprint.route('/deployments', methods=['GET'])
 def deployment_configs():
     result = run_oc_command("oc get deployments -o name")
@@ -50,6 +55,7 @@ def deployment_configs():
     if user_not_logged:
         return jsonify({"current_project": "Not logged in"}), 401
     return jsonify({"deployments": result.split()})
+
 
 @oc_blueprint.route('/restart-deployment/<deployment_name>', methods=['POST'])
 def restart_deployment(deployment_name):
