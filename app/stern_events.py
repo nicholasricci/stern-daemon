@@ -26,8 +26,10 @@ def handle_log_stream(data):
         if output:
             text = str(output)
             text = text.replace("b'", "", 1)
-            text = text.replace("\\r\\n'", "", 1)
-            text = re.sub(r'\\\\', r'\\', text)
+            # remove the last character of the string
+            text = text[:-5]
+            #text = text.replace("\\r\\n'", "", 1)
+            #text = re.sub(r'\\\\', r'\\', text)
             emit('log_stream', {'data': text})
 
 
