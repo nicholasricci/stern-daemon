@@ -16,7 +16,7 @@ def run_oc_command(command):
 @oc_blueprint.route('/login', methods=['POST'])
 def login():
     data = request.json
-    result = run_oc_command(f"oc login {data['server']} -u {data['email']} -p {data['password']}")
+    result = run_oc_command(f"oc login {data['server']} --insecure-skip-tls-verify=true -u {data['email']} -p {data['password']}")
     return jsonify({"current_project": result.strip()})
 
 
