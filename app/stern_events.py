@@ -7,7 +7,7 @@ from . import socketio
 process = None
 
 
-@socketio.on('start_log_stream')
+@socketio.on('start_log_stream', namespace='/socket.io')
 def handle_log_stream(data):
     deployment_name = data['deployment_name']
     filters = data['filters']
@@ -33,7 +33,7 @@ def handle_log_stream(data):
             emit('log_stream', {'data': text})
 
 
-@socketio.on('stop_log_stream')
+@socketio.on('stop_log_stream', namespace='/socket.io')
 def handle_log_stream():
     global process
     if process:
